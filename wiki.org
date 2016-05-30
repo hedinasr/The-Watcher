@@ -1,0 +1,83 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline author:t c:nil
+#+OPTIONS: creator:nil d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t
+#+OPTIONS: num:t p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t timestamp:t
+#+OPTIONS: title:t toc:t todo:t |:t
+#+TITLE: JADE 
+#+DATE: <2016-05-29 Sun>
+#+AUTHOR: hedi nasr
+#+EMAIL: hedi.nasr@etu.univ-lyon1.fr
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 24.5.1 (Org mode 8.3.4)
+
+* Starting JADE
+
+Open a shell, move to the ~jade~ directory and type
++ ~java -cp lib/jade.jar jade.Boot -gui~
+
+It is possible to make JADE use a different port by means of the ~-local-port <a-port>~ option.
+For instance to make the Main Container accept incoming connections from other containers on port ~1111~ :
++ ~java -cp lib/jade.jar jade.Boot -gui -local-port 1111~
+
+Similarly it is possible to make JADE use a different host name/address with respect to that read from the underlying network stack 
+by means of the ~-local-host <host-name-or-address>~ option :
++ ~java -cp lib/jade.jar jade.Boot -gui -local-host avalon.tilab.com~
+
+You can explicitly assign a name to a Container (regardless of it is a Main or peripheral Container) by means of the -container-name <a-name> option :
++ ~java -cp lib/jade.jar jade.Boot -gui -container-name myContainer~
+
+It is possible to set a different platform name by means of the -platform-id <a-platform-name> configuration option as in the command line below :
++ ~java -cp lib\jade.jar jade.Boot -gui -platform-id MyPlatform~
+
+** Running Some Agents
+Agents can be started in two ways: directly from the command line (at container startup time) by means of the ~-agents~ option, or later on by means of the Management GUI
+
+In both cases, unless we use more sophisticated features such as Agent Mobility or /Jar-packaged-agents/ which are out of the scope of this tutorial 
+(see the JADE Administrator's Guide for details), the agent classes must be included in the classpath of the Container where we want to start them. 
+
+*** Starting agents using the command line
+In the shell type the command line below :
++ ~java -cp lib/jade.jar:classes jade.Boot -gui -agents ping1:examples.PingAgent.PingAgent~
+
+Note that the ~classpath~ includes JADE classes (~lib/jade.jar~) and the previously compiled classes of the examples (classes). 
+Note also that the value of the ~-agents~ option takes the form :
++ ~<agent-local-name>:<fully-qualified-agent-class>~
+
+Using JADE terminology, this is called an "Agent Specifier". More than one agent can be started by just typing several agent specifiers separated by a 
+semicolon (';') as in the example below :
++ ~java -cp lib/jade.jar:classes jade.Boot -gui -agents ping1:examples.PingAgent.PingAgent;ping2:examples.PingAgent.PingAgent~
+
+The above example also shows that you can start several agents sharing the same class. Each one will have its name and will operate independently from the others. 
+
+(The ~PingAgent~ is a very simple agent waiting for messages. If a REQUEST message with content ping is received, an INFORM message with content pong is sent back.
+If any other message is received, a NOT_UNDERSTOOD message is sent back)
+
+* Creating a distributed platform
+In previous section we shown how to start the JADE Main Container. In this tutorial we will see how to start peripheral containers thus creating a distributed JADE platform. 
+
+** Multiple Containers on one Computer
+Keep the Main Container activated in previous section on, then open another shell, move to the jade directory and type
++ ~java -cp lib\jade.jar;classes jade.Boot -container~
+
+An output similar to that presented in previous section appears. If you look at the RMA GUI (i.e. the Management Console), beside the Main Container,
+you will see a new container called ~Container-1~.
+
+The -container option tells JADE to start a peripheral container instead of a Main Container. 
+A peripheral container cannot live "alone" and must connect to a Main Container at startup. 
+Therefore typically it is necessary to tell it where to find the Main Container to connect to.
+This is done by means of the ~-host <host-name>~ and ~-port <port-number>~. In our case it was not necessary to specify such options as the Main Container is
+running on the local host and on the JADE default port 1099. Therefore the command line we typed is fully equivalent to
++ ~java -cp lib/jade.jar:classes jade.Boot -container -host localhost -port 1099~
+
+** Remote Containers
+
+Let's assume the host where we worked up to now is walled ~frodo~.
+Let's also assume we have a second host called ~bilbo~ networked with the first one.
+
++ Move to ~bilbo~ and /unzip/ the JADE binary, source and examples distribution somewhere as you did in ~frodo~.
++ Compile the examples opening a shell, moving to the ~jade~ directory ant typing :
+  + ~ant examples~
++ Finally launch a new peripheral container connecting to the Main Container in ~frodo~ with a third ~PingAgent~ called
+  ~ping3~ on top by typing the command line below :
+  + ~java -cp lib/jade.jar:classes jade.Boot -container -host frodo -port 1099 -agents ping3:examples.PingAgent.PingAgent~

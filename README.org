@@ -1,0 +1,23 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline author:t c:nil
+#+OPTIONS: creator:nil d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t
+#+OPTIONS: num:t p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t timestamp:t
+#+OPTIONS: title:t toc:t todo:t |:t
+#+TITLE: The-Watcher
+#+DATE: <2016-05-30 Mon>
+#+AUTHOR: hedi nasr
+#+EMAIL: hedinasr@MacBook-Pro-de-hedi.local
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 24.5.1 (Org mode 8.3.4)
+
+Analyse de fichiers journaux (log) dans un environnement distribuée à l'aide du système multi-agents JADE.
+
+* Script
+1. Run the Main-Container with the Administrator Agent : ~java -cp ../jade/lib/jade.jar:classes jade.Boot -gui -agents admin:com.jade.Administrator~
+   + try without ~-gui~ option
+2. Add one other container with some agents :
+   + ~java -cp lib/jade.jar:classes jade.Boot -container -host <host> -port <port> -agents user:com.jade.User~
+     - ~-container~ option tells JADE to start a peripheral container instead of the Main Container.
+     - ~-host~ and ~-port~ options is necessary to tell it where to find the Main Container to connect to.
+     - More than one agent can be started by just typing several agent specifiers separated by a semicolon (';').
