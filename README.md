@@ -15,8 +15,8 @@ Analyse de fichiers journaux (log) dans un environnement distribuée à l'aide d
 -   `cd script`
 -   For run an Administrator in local :
     -   `./admin.sh`
--   For run a User agent in remote computer :
-    -   `./user.sh <ip>`
+-   For run a User agent in remote computer (type this command in the remote computer):
+    -   `./user.sh <ip>` : `<ip>` is the IP of the Administrator agent computer.
 
 # To do <code>[0/1]</code><a id="orgheadline2"></a>
 
