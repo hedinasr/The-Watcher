@@ -20,6 +20,14 @@ public class User extends Agent {
     @Override
     protected void setup() {
 
+        // Send message to admin
+        //message.setLanguage("English");
+        //message.setContent(executeCommand("logwatch --level high"));
+
+        ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+        message.addReceiver(new AID("admin", AID.ISLOCALNAME));
+        message.setContent("Hello");
+        send(message);
         addBehaviour(new CyclicBehaviour(this) {
 
             private boolean finished = true;
@@ -31,15 +39,6 @@ public class User extends Agent {
             @Override
             public void action() {
                 // ... this is where the real programming goes !!
-                // Send message to admin
-                //message.setLanguage("English");
-                //message.setContent(executeCommand("logwatch --level high"));
-
-                ACLMessage message = new ACLMessage(ACLMessage.INFORM);
-                message.addReceiver(new AID("admin", AID.ISLOCALNAME));
-                message.setContent("Hello");
-                send(message);
-
                 System.out.println("Hello ! My name is " + myAgent.getLocalName());
                 System.out.println("Waiting for message");
                 ACLMessage receive = myAgent.receive();
