@@ -19,3 +19,6 @@ Analyse de fichiers journaux (log) dans un environnement distribuée à l'aide d
   + ~./admin.sh~
 + For run a User agent in remote computer :
   + ~./user.sh <ip>~
+
+* To do
+** TODO Deployment in external network
