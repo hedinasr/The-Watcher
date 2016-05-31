@@ -2,6 +2,7 @@ package jade;
 
 import jade.core.AID;
 import jade.core.Agent;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.tools.sniffer.Message;
@@ -19,7 +20,7 @@ public class User extends Agent {
     @Override
     protected void setup() {
 
-        addBehaviour(new SimpleBehaviour(this) {
+        addBehaviour(new CyclicBehaviour(this) {
 
             private boolean finished = true;
 
@@ -30,25 +31,33 @@ public class User extends Agent {
             @Override
             public void action() {
                 // ... this is where the real programming goes !!
-                System.out.println("Hello ! My name is " + myAgent.getLocalName());
-
-                // Send message to Smith
-                Message message = new Message(new ACLMessage(ACLMessage.INFORM), new AID("peter", AID.ISLOCALNAME));
-                message.setLanguage("English");
+                // Send message to admin
+                //message.setLanguage("English");
                 //message.setContent(executeCommand("logwatch --level high"));
-                message.setContent("Bonjour");
-                send(message);
-            }
 
-            @Override
-            public boolean done() {
-                return finished;
+                ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+                message.addReceiver(new AID("admin", AID.ISLOCALNAME));
+                message.setContent("Hello");
+                send(message);
+
+                System.out.println("Hello ! My name is " + myAgent.getLocalName());
+                System.out.println("Waiting for message");
+                ACLMessage receive = myAgent.receive();
+                if (receive != null) {
+                    // process the received message
+                    System.out.println("Receive message : " + message.getContent());
+                } else {
+                    // block the behaviour while receiving message
+                    System.out.println("block");
+                    block();
+                }
             }
         });
     }
 
     /**
      * Execute command
+     *
      * @param command to execute
      * @return output of the command
      */

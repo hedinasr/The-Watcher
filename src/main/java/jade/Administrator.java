@@ -16,16 +16,22 @@ public class Administrator extends Agent {
 
         parseArguments();
 
-        addBehaviour(new CyclicBehaviour() {
+        addBehaviour(new CyclicBehaviour(this) {
             @Override
             public void action() {
                 System.out.println("Waiting for message");
                 ACLMessage message = myAgent.receive();
                 if (message != null) {
                     // process the received message
-                    System.out.println(message.getContent());
+                    System.out.println("Receive message : " + message.getContent());
+                    //
+                    ACLMessage reply = message.createReply();
+                    reply.setPerformative(ACLMessage.CONFIRM);
+                    reply.setContent("ACK");
+                    send(reply);
                 } else {
                     // block the behaviour while receiving message
+                    System.out.println("block");
                     block();
                 }
             }

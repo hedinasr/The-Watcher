@@ -13,11 +13,14 @@
 
 Analyse de fichiers journaux (log) dans un environnement distribuée à l'aide du système multi-agents JADE.
 
-* Script
-1. Run the Main-Container with the Administrator Agent : ~java -cp ../jade/lib/jade.jar:classes jade.Boot -gui -agents admin:com.jade.Administrator~
-   + try without ~-gui~ option
-2. Add one other container with some agents :
-   + ~java -cp lib/jade.jar:classes jade.Boot -container -host <host> -port <port> -agents user:com.jade.User~
+* Deployment
+1. Export classpath
+2. Compile classes ~Administrator.java~ and ~User.java~ :
+   + ~javac -classpath lib/jade.jar -d classes src/main/java/jade/[Administrator/User].java~
+3. Run the Main-Container with the Administrator Agent :
+   + ~java -cp lib/jade.jar:classes jade.Boot -agents admin:jade.Administrator~
+4. Add one other container with some agents :
+   + ~java -cp lib/jade.jar:classes jade.Boot -container -host <host> -port <port> -agents user:jade.User~
      - ~-container~ option tells JADE to start a peripheral container instead of the Main Container.
      - ~-host~ and ~-port~ options is necessary to tell it where to find the Main Container to connect to.
      - More than one agent can be started by just typing several agent specifiers separated by a semicolon (';').
