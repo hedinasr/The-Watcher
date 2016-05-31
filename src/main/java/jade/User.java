@@ -3,6 +3,7 @@ package jade;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.tools.sniffer.Message;
@@ -20,15 +21,7 @@ public class User extends Agent {
     @Override
     protected void setup() {
 
-        // Send message to admin
-        //message.setLanguage("English");
-        //message.setContent(executeCommand("logwatch --level high"));
-
-        ACLMessage message = new ACLMessage(ACLMessage.INFORM);
-        message.addReceiver(new AID("admin", AID.ISLOCALNAME));
-        message.setContent("Hello");
-        send(message);
-        addBehaviour(new CyclicBehaviour(this) {
+        addBehaviour(new OneShotBehaviour(this) {
 
             private boolean finished = true;
 
@@ -38,13 +31,19 @@ public class User extends Agent {
              */
             @Override
             public void action() {
+                // Send message to admin
+                //message.setLanguage("English");
+                //message.setContent(executeCommand("logwatch --level high"));
+
+                ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+                message.addReceiver(new AID("admin", AID.ISLOCALNAME));
+                message.setContent("Hello");
+                send(message);
                 // ... this is where the real programming goes !!
-                System.out.println("Hello ! My name is " + myAgent.getLocalName());
-                System.out.println("Waiting for message");
                 ACLMessage receive = myAgent.receive();
                 if (receive != null) {
                     // process the received message
-                    System.out.println("Receive message : " + message.getContent());
+                    System.out.println("Receive message : " + receive.getContent());
                 } else {
                     // block the behaviour while receiving message
                     System.out.println("block");

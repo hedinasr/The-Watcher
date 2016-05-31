@@ -5,7 +5,8 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 
 /**
- * Take the command line parameter
+ * Administrator agent.
+ * TODO time out
  */
 public class Administrator extends Agent {
 
