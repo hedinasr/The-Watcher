@@ -21,4 +21,4 @@ Analyse de fichiers journaux (log) dans un environnement distribuée à l'aide d
   + ~./user.sh <ip>~
 
 * To do
-** TODO Deployment in external network
+- [ ] Deployment in external network
