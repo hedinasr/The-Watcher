@@ -81,3 +81,14 @@ Let's also assume we have a second host called ~bilbo~ networked with the first 
 + Finally launch a new peripheral container connecting to the Main Container in ~frodo~ with a third ~PingAgent~ called
   ~ping3~ on top by typing the command line below :
   + ~java -cp lib/jade.jar:classes jade.Boot -container -host frodo -port 1099 -agents ping3:examples.PingAgent.PingAgent~
+* Shortly
++ Compile classes ~Administrator.java~ and ~User.java~ :
+  + ~javac -classpath lib/jade.jar -d classes src/main/java/jade/[Administrator/User].java~
++ Run the Main-Container with the Administrator Agent :
+  + ~java -cp lib/jade.jar:classes jade.Boot -agents admin:jade.Administrator~
++ Add one other container with some agents :
+  - ~java -cp lib/jade.jar:classes jade.Boot -container -host <host> -port <port> -agents user:jade.User~
+    - ~-container~ option tells JADE to start a peripheral container instead of the Main Container.
+    - ~-host~ and ~-port~ options is necessary to tell it where to find the Main Container to connect to.
+    - More than one agent can be started by just typing several agent specifiers separated by a semicolon (';').
+
